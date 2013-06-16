@@ -31,11 +31,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
+import net.lazlecraft.HubKick.HubKick;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class VoteResult implements Runnable {
+public class VoteResult extends HubKick implements Runnable {
 	public void run()
 	{
 		try {
@@ -67,9 +69,9 @@ public class VoteResult implements Runnable {
 			
 			for (Player p : Bukkit.getOnlinePlayers())
 			{
-				p.kickPlayer(ChatColor.RED + "Next game: The Walls " + (AutoWalls.config.getInt("next-map")) + ChatColor.AQUA + " Reconnect and type /join to get in a game.");
+				p.sendMessage(ChatColor.RED + "Next game: The Walls " + (AutoWalls.config.getInt("next-map")));
 			}
-			Bukkit.shutdown();
+			kickshutdown();
 		}
 		catch (Exception e)
 		{

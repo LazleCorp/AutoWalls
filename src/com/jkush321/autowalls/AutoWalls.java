@@ -31,7 +31,6 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
-
 import com.jkush321.autowalls.commands.*;
 import com.jkush321.autowalls.listeners.*;
 import org.bukkit.Bukkit;
@@ -42,9 +41,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import com.jkush321.autowalls.kits.KitManager;
 
 public final class AutoWalls extends JavaPlugin {
@@ -107,31 +106,7 @@ public final class AutoWalls extends JavaPlugin {
 		plugin = this;
 
         //Register commands
-
-        getCommand("autowalls").setExecutor(new AutoWallsCommand(this));
-        getCommand("day").setExecutor(new DayCommand(this));
-        getCommand("fly").setExecutor(new FlyCommand(this));
-        getCommand("forcedrop").setExecutor(new ForceDropCommand(this));
-        getCommand("forceend").setExecutor(new ForceEndCommand(this));
-        getCommand("forcestart").setExecutor(new ForceStartCommand(this));
-        getCommand("join").setExecutor(new JoinCommand(this));
-        getCommand("kit").setExecutor(new KitCommand(this));
-        getCommand("leave").setExecutor(new LeaveCommand(this));
-        getCommand("me").setExecutor(new MeCommand(this));
-        getCommand("night").setExecutor(new NightCommand(this));
-        getCommand("playing").setExecutor(new PlayingCommand(this));
-        getCommand("prefix").setExecutor(new PrefixCommand(this));
-        getCommand("priority").setExecutor(new PriorityCommand(this));
-        getCommand("teamchat").setExecutor(new TeamChatCommand(this));
-        getCommand("team").setExecutor(new TeamCommand(this));
-        getCommand("tell").setExecutor(new TellCommand(this));
-        getCommand("time").setExecutor(new TimeCommand(this));
-        getCommand("tpall").setExecutor(new TpAllCommand(this));
-        getCommand("tp").setExecutor(new TpCommand(this));
-        getCommand("tphere").setExecutor(new TpHereCommand(this));
-        getCommand("tpplayers").setExecutor(new TpPlayersCommand(this));
-        getCommand("tpspecs").setExecutor(new TpSpecsCommand(this));
-        getCommand("yell").setExecutor(new YellCommand(this));
+		registerCommands();
 
         getServer().getPluginManager().registerEvents(PlayerBlockListener, this);
         getServer().getPluginManager().registerEvents(PlayerConnectionListener, this);
@@ -145,7 +120,6 @@ public final class AutoWalls extends JavaPlugin {
 		config.addDefault("priorities", true);
 		config.addDefault("team-size", 4);
 		config.addDefault("next-map", 1);
-		config.addDefault("announcements", "Seperate Announements With SemiColons;You should have at least 2 messages;Your message here!");
 		config.addDefault("map-votes", true);
 		config.addDefault("prevent-sneaking-after-walls-fall", true);
 		config.addDefault("disable-healing-after-walls-fall", true);
@@ -318,6 +292,33 @@ public final class AutoWalls extends JavaPlugin {
 	public void onDisable() {
 
 	}
+    
+    public void registerCommands() {
+        getCommand("autowalls").setExecutor(new AutoWallsCommand(this));
+        getCommand("day").setExecutor(new DayCommand(this));
+        getCommand("fly").setExecutor(new FlyCommand(this));
+        getCommand("forcedrop").setExecutor(new ForceDropCommand(this));
+        getCommand("forceend").setExecutor(new ForceEndCommand(this));
+        getCommand("forcestart").setExecutor(new ForceStartCommand(this));
+        getCommand("join").setExecutor(new JoinCommand(this));
+        getCommand("kit").setExecutor(new KitCommand(this));
+        getCommand("leave").setExecutor(new LeaveCommand(this));
+        getCommand("me").setExecutor(new MeCommand(this));
+        getCommand("night").setExecutor(new NightCommand(this));
+        getCommand("playing").setExecutor(new PlayingCommand(this));
+        getCommand("prefix").setExecutor(new PrefixCommand(this));
+        getCommand("priority").setExecutor(new PriorityCommand(this));
+        getCommand("teamchat").setExecutor(new TeamChatCommand(this));
+        getCommand("team").setExecutor(new TeamCommand(this));
+        getCommand("tell").setExecutor(new TellCommand(this));
+        getCommand("time").setExecutor(new TimeCommand(this));
+        getCommand("tpall").setExecutor(new TpAllCommand(this));
+        getCommand("tp").setExecutor(new TpCommand(this));
+        getCommand("tphere").setExecutor(new TpHereCommand(this));
+        getCommand("tpplayers").setExecutor(new TpPlayersCommand(this));
+        getCommand("tpspecs").setExecutor(new TpSpecsCommand(this));
+        getCommand("yell").setExecutor(new YellCommand(this));
+    }
 
 	
 	public void joinTeam(Player p, String team)
@@ -576,7 +577,16 @@ public final class AutoWalls extends JavaPlugin {
 		p.sendMessage(ChatColor.YELLOW + "You can enable flying with /fly");
 		p.setGameMode(GameMode.ADVENTURE);
 	}
-
+	
+	//Should not be able to kill spectators.
+	public void onDMG(EntityDamageEvent ev){
+		if (ev.getEntity() instanceof Player){
+			Player p = (Player) ev.getEntity();
+			if (!(playing.contains(p))){
+				ev.setCancelled(true);
+			}
+		}
+	}
 	public void createGrave(Location l, String playername)
 	{
 		Random r = new Random();
@@ -622,4 +632,5 @@ public final class AutoWalls extends JavaPlugin {
 		if (dead.contains(name)) dead.remove(name);
 		Tabs.updateAll();
 	}
+
 }
