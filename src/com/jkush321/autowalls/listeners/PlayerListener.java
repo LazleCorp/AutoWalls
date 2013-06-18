@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -47,6 +48,16 @@ public class PlayerListener implements Listener {
             }
         }
     }
+    
+	@EventHandler
+	public void onDamage(EntityDamageEvent ev){
+		if (ev.getEntity() instanceof Player){
+			Player p = (Player) ev.getEntity();
+			if (!(AutoWalls.playing.contains(p))){
+				ev.setCancelled(true);
+			}
+		}
+	}
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e)
@@ -54,6 +65,7 @@ public class PlayerListener implements Listener {
         if (AutoWalls.playing.contains(e.getPlayer()) && WallDropper.time<=0 && AutoWalls.blockSneaking)
             if (e.isSneaking()==true) e.setCancelled(true);
     }
+    
     @EventHandler
     public void onEat(EntityRegainHealthEvent e)
     {

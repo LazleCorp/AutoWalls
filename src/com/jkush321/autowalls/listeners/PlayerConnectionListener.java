@@ -3,7 +3,6 @@ package com.jkush321.autowalls.listeners;
 import com.jkush321.autowalls.AutoWalls;
 import com.jkush321.autowalls.Tabs;
 import com.jkush321.autowalls.Tags;
-import com.jkush321.autowalls.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -37,10 +36,6 @@ public class PlayerConnectionListener implements Listener {
             }
         }
         e.getPlayer().setGameMode(GameMode.ADVENTURE);
-        if (e.getPlayer().hasPermission("walls.op"))
-        {
-            UpdateChecker.checkAndSendMessage(e.getPlayer());
-        }
         Tabs.addPlayer(e.getPlayer());
     }
 

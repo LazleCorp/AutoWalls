@@ -1,7 +1,6 @@
 package com.jkush321.autowalls.listeners;
 
 import com.jkush321.autowalls.AutoWalls;
-import com.jkush321.autowalls.WallDropper;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,15 +20,15 @@ public class ServerListener implements Listener {
         String message = "AutoWalls Server";
         if (!AutoWalls.gameInProgress && !AutoWalls.gameOver)
         {
-            message=(ChatColor.DARK_GREEN + "Game ready");
+            message=(ChatColor.GREEN + "Game is ready");
         }
         else if (AutoWalls.gameInProgress)
         {
-            message=(ChatColor.DARK_GREEN + "Game started");
+            message=(ChatColor.GREEN + "Game started");
         }
         else if (AutoWalls.gameOver)
         {
-            message=ChatColor.DARK_GREEN + "Game ended";
+            message=ChatColor.GREEN + "Game ended";
         }
         e.setMotd(message);
     }

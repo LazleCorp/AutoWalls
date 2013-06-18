@@ -21,7 +21,7 @@ public class PlayerBlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e)
     {
         Player p = e.getPlayer();
-        if (e.getPlayer().hasPermission("walls.op")) return;
+        if (p.hasPermission("walls.op")) return;
         if (!AutoWalls.playing.contains(e.getPlayer())) e.setCancelled(true);
         if (!AutoWalls.gameInProgress) e.setCancelled(true);
         if (AutoWalls.mapNumber==1)

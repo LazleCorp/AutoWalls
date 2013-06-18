@@ -41,7 +41,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.jkush321.autowalls.kits.KitManager;
@@ -99,6 +98,8 @@ public final class AutoWalls extends JavaPlugin {
     private final PlayerConnectionListener PlayerConnectionListener = new PlayerConnectionListener(this);
     private final ServerListener ServerListener = new ServerListener(this);
     private final WorldListener WorldListener = new WorldListener(this);
+    
+    
 
     @Override
 	public void onEnable()
@@ -469,6 +470,12 @@ public final class AutoWalls extends JavaPlugin {
 		for (Player p : playing)
 		{
             p.setGameMode(GameMode.SURVIVAL);
+            p.getInventory().clear();
+            p.setFoodLevel(20);
+            p.setMaxHealth(p.getMaxHealth());
+            p.setFireTicks(0);
+            
+
             for (Player pl : Bukkit.getOnlinePlayers())
             {
                 if (p != pl && !playing.contains(p)) p.hidePlayer(pl);
@@ -578,15 +585,6 @@ public final class AutoWalls extends JavaPlugin {
 		p.setGameMode(GameMode.ADVENTURE);
 	}
 	
-	//Should not be able to kill spectators.
-	public void onDMG(EntityDamageEvent ev){
-		if (ev.getEntity() instanceof Player){
-			Player p = (Player) ev.getEntity();
-			if (!(playing.contains(p))){
-				ev.setCancelled(true);
-			}
-		}
-	}
 	public void createGrave(Location l, String playername)
 	{
 		Random r = new Random();

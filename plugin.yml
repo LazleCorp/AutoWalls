@@ -1,6 +1,7 @@
 name: AutoWalls
 main: com.jkush321.autowalls.AutoWalls
-version: 1.0
+version: 1.1
+depend: [HubKick]
 commands:
   autowalls:
     description: Display version and reload config.

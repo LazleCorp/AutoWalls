@@ -37,7 +37,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class VoteResult extends HubKick implements Runnable {
+	
+public class VoteResult implements Runnable {
+	
+	HubKick kickhub = (HubKick) Bukkit.getPluginManager().getPlugin("HubKick");
+	
 	public void run()
 	{
 		try {
@@ -71,7 +75,7 @@ public class VoteResult extends HubKick implements Runnable {
 			{
 				p.sendMessage(ChatColor.RED + "Next game: The Walls " + (AutoWalls.config.getInt("next-map")));
 			}
-			kickshutdown();
+			kickhub.kickShutdown();
 		}
 		catch (Exception e)
 		{
