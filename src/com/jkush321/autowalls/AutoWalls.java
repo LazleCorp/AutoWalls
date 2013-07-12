@@ -33,6 +33,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 import com.jkush321.autowalls.commands.*;
 import com.jkush321.autowalls.listeners.*;
+
+import net.lazlecraft.hubkick.HubKick;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -46,7 +49,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.jkush321.autowalls.kits.KitManager;
 
 public final class AutoWalls extends JavaPlugin {
-
+	
+	HubKick kickhub = (HubKick) Bukkit.getPluginManager().getPlugin("HubKick");
+	
 	public static Plugin plugin = Bukkit.getPluginManager().getPlugin("AutoWalls");
 	public static final Logger logger = Logger.getLogger("Minecraft");
 	public static List<Player> playing = new CopyOnWriteArrayList<Player>();
@@ -526,8 +531,8 @@ public final class AutoWalls extends JavaPlugin {
 		{
 			for (Player p : Bukkit.getOnlinePlayers())
 			{
-				p.kickPlayer(ChatColor.RED + "The " + team + " team has won the game! " + ChatColor.DARK_AQUA + "Reconnect and type /join");
-				Bukkit.shutdown();
+				p.sendMessage(ChatColor.RED + "The " + team + " team has won the game! " + ChatColor.DARK_AQUA + "Reconnect and type /join");
+				kickhub.kickShutdown();
 			}
 		}
 	}

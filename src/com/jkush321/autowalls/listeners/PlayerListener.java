@@ -29,6 +29,16 @@ public class PlayerListener implements Listener {
     public PlayerListener(AutoWalls plugin) {
         this.plugin = plugin;
     }
+    
+    @EventHandler
+    public void onJoin(PlayerJoinEvent ev){
+    	Player p = ev.getPlayer();
+    	if (!AutoWalls.gameInProgress) {
+    	p.performCommand("join");
+    	p.sendMessage("");
+    	p.sendMessage(ChatColor.GREEN + "To pick a kit, type /kit");
+    	}
+    }
 
     @EventHandler
     public void onTp (PlayerTeleportEvent e)
@@ -73,7 +83,7 @@ public class PlayerListener implements Listener {
         {
             if (AutoWalls.playing.contains((Player) e.getEntity()) && AutoWalls.disableHealing && WallDropper.time<=0) {
                 Random r = new Random();
-                e.setAmount(r.nextInt( (20 - ((Player)e.getEntity()).getHealth()) / 2 ));
+                e.setAmount(r.nextInt( (int) ((20 - ((Player)e.getEntity()).getHealth()) / 2) ));
             }
         }
     }

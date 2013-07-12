@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import net.lazlecraft.HubKick.HubKick;
+import net.lazlecraft.hubkick.HubKick;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
