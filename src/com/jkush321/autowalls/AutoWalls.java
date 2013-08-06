@@ -92,6 +92,7 @@ public final class AutoWalls extends JavaPlugin {
 	public static int priorityPerDollar;
 	public static Map<Player, Long> lastEvent = new ConcurrentHashMap<>();
 	public static int secondsBeforeTeleport;
+	public static int minutesToDeathmatch;
 	public final static String version = "1.1r1";
 	public static int earlyJoinPriority, lateJoinPriority;
 	public static boolean lateJoins;
@@ -137,6 +138,7 @@ public final class AutoWalls extends JavaPlugin {
 		config.addDefault("priority-kick-message", "Someone with higher priority joined!");
 		config.addDefault("team-teleports", true);
 		config.addDefault("game-length-in-minutes", 15);
+		config.addDefault("minutes-to-deathmatch", 10);
 		config.addDefault("vote-link", "my-vote-link.com");
 		config.addDefault("priority-per-dollar", 5);
 		config.addDefault("seconds-before-teleport", 3);
@@ -146,7 +148,6 @@ public final class AutoWalls extends JavaPlugin {
 		config.addDefault("prevent-fire-before-walls-fall", true);
 		config.addDefault("max-color-cycler-time", 120);
 		config.addDefault("use-tab-api", true);
-		
 		config.options().copyDefaults(true);
 	    saveConfig();	    
 
@@ -160,6 +161,7 @@ public final class AutoWalls extends JavaPlugin {
 	    fullKickMessage=config.getString("full-server-message");
 	    priorityKickMessage=config.getString("priority-kick-message");
 	    JoinTimer.timeleft = config.getInt("seconds-before-can-join-team");
+	    minutesToDeathmatch = config.getInt("minutes-to-deathmatch");
 	    teamTeleports = config.getBoolean("team-teleports");
 	    WallDropper.time=config.getInt("game-length-in-minutes") * 60;
 	    votelink = config.getString("vote-link");
@@ -324,6 +326,7 @@ public final class AutoWalls extends JavaPlugin {
         getCommand("tpplayers").setExecutor(new TpPlayersCommand(this));
         getCommand("tpspecs").setExecutor(new TpSpecsCommand(this));
         getCommand("yell").setExecutor(new YellCommand(this));
+        getCommand("deathmatch").setExecutor(new DeathmatchCommand(this));
     }
 
 	

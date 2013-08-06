@@ -54,6 +54,8 @@ commands:
     description: Lets you choose a kit
   prefix:
     description: Set a player prefix
+  deathmatch:
+    description: Deathmatch stuff
 permissions:
   walls.player:
     description: Player of walls

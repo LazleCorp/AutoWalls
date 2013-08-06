@@ -25,15 +25,21 @@ package com.jkush321.autowalls;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportManager {
 	private static Map<Player, Runnable> runnables = new HashMap<>();
 	private static Map<Runnable, Player> runnableOwnership = new HashMap<>();
 	private static Map<Player, Player> tpTargets = new HashMap<>();
+	private static AutoWalls plugin;
+	
+	public TeleportManager(AutoWalls plugin) {
+		this.plugin = plugin;
+	}
 	
 	public static Runnable getRunnable(Player p)
 	{
@@ -74,5 +80,29 @@ public class TeleportManager {
 		runnables.put(p, runnable);
 		if (tpTargets.containsKey(p)) tpTargets.remove(p);
 		tpTargets.put(p, target);
+	}
+	
+	public static void deathMatch() {
+		Bukkit.broadcastMessage(ChatColor.GREEN + "Deathmatch has started!");
+		new BukkitRunnable() {
+			public void run() {
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (AutoWalls.mapNumber == 1) {
+						if (plugin.getConfig().getString("SpawnX1") == null) {
+							p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
+						} else {
+						p.teleport(new Location(Bukkit.getWorlds().get(0),plugin.getConfig().getInt("SpawnX1"),plugin.getConfig().getInt("SpawnY1"),plugin.getConfig().getInt("SpawnZ1")));
+					}
+				}	
+					else if (AutoWalls.mapNumber == 2) {
+						if (plugin.getConfig().getString("SpawnX2") == null) {
+							p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
+						} else {
+						p.teleport(new Location(Bukkit.getWorlds().get(0),plugin.getConfig().getInt("SpawnX2"),plugin.getConfig().getInt("SpawnY2"),plugin.getConfig().getInt("SpawnZ2")));
+						}
+					}
+				}
+			}
+		}.runTaskLater(plugin, 20L);
 	}
 }

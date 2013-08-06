@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WallDropper extends BukkitRunnable{
+public class WallDropper extends BukkitRunnable {
 	
 	public static int time;
     public static boolean Dropping;
@@ -50,27 +50,27 @@ public class WallDropper extends BukkitRunnable{
                 time--;
 				if (time==50*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				if (time==40*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				if (time==30*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				if (time==20*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				if (time==10*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				else if (time==5*60)
 				{
-					announce("There are", "minutes remaining, all players have recieved 2 beef!");
+					announce("There are", "seconds remaining, all players have recieved 2 beef!");
 					ItemStack beef = new ItemStack(Material.COOKED_BEEF, 2);
 					for (Player p : AutoWalls.playing)
 					{
@@ -79,15 +79,15 @@ public class WallDropper extends BukkitRunnable{
 				}
 				else if (time==3*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				else if (time==2*60)
 				{
-					announce("There are", "minutes remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				else if (time==60)
 				{
-					announce("There is", "minute remaining!");
+					announce("There are", "seconds remaining!");
 				}
 				else if (time==30)
 				{
@@ -131,7 +131,7 @@ public class WallDropper extends BukkitRunnable{
 				}
 				else if (time==1)
 				{
-					announce("There is", "second remaining!");
+					announce("There are", "second remaining!");
 				}
 				else if (time==0)
 				{
@@ -143,9 +143,10 @@ public class WallDropper extends BukkitRunnable{
                 else if (time < -30){
                     Dropping = false;
                     Bukkit.getScheduler().cancelTask(AutoWalls.dropperTask);
+                } else if (time < -1200 * plugin.getConfig().getInt("minutes-to-deathmatch")) {
+                	TeleportManager.deathMatch();
                 }
 			}
-
 		}
 
     public void announce(final String prefix, final  String suffix)
