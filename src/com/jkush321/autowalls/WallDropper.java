@@ -34,6 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class WallDropper extends BukkitRunnable {
 	
 	public static int time;
+	public int sec = 1200;
     public static boolean Dropping;
     public static boolean Dropped;
 
@@ -136,6 +137,8 @@ public class WallDropper extends BukkitRunnable {
 				else if (time==0)
 				{
                     dropWalls();
+                    AutoWalls.activateDeathmatch();
+                    Bukkit.broadcastMessage(ChatColor.RED + "Deathmatch will commence in" + 1200 * plugin.getConfig().getInt("minutes-to-deathmatch"));
 				}
                 else if (time < 1 && time > -30) {
                     Dropping = true;
@@ -143,8 +146,6 @@ public class WallDropper extends BukkitRunnable {
                 else if (time < -30){
                     Dropping = false;
                     Bukkit.getScheduler().cancelTask(AutoWalls.dropperTask);
-                } else if (time < -1200 * plugin.getConfig().getInt("minutes-to-deathmatch")) {
-                	TeleportManager.deathMatch();
                 }
 			}
 		}

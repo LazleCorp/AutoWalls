@@ -46,6 +46,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.jkush321.autowalls.kits.KitManager;
 
 public final class AutoWalls extends JavaPlugin {
@@ -638,5 +640,36 @@ public final class AutoWalls extends JavaPlugin {
 		if (dead.contains(name)) dead.remove(name);
 		Tabs.updateAll();
 	}
-
+	
+	public static void activateDeathmatch() {
+		new BukkitRunnable() {
+			public void run() {
+				AutoWalls.deathMatch();
+			}
+		}.runTaskLater(AutoWalls.plugin, 1200 * plugin.getConfig().getInt("minutes-to-deathmatch"));
+	}
+	
+	public static void deathMatch() {
+		Bukkit.broadcastMessage(ChatColor.GREEN + "Deathmatch has started!");
+		new BukkitRunnable() {
+			public void run() {
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (AutoWalls.mapNumber == 1) {
+						if (plugin.getConfig().getString("SpawnX1") == null) {
+							p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
+						} else {
+						p.teleport(new Location(Bukkit.getWorlds().get(0),plugin.getConfig().getInt("SpawnX1"),plugin.getConfig().getInt("SpawnY1"),plugin.getConfig().getInt("SpawnZ1")));
+					}
+				}	
+					else if (AutoWalls.mapNumber == 2) {
+						if (plugin.getConfig().getString("SpawnX2") == null) {
+							p.teleport(p.getWorld().getSpawnLocation().add(0.5,0.5,0.5));
+						} else {
+						p.teleport(new Location(Bukkit.getWorlds().get(0),plugin.getConfig().getInt("SpawnX2"),plugin.getConfig().getInt("SpawnY2"),plugin.getConfig().getInt("SpawnZ2")));
+						}
+					}
+				}
+			}
+		}.runTaskLater(AutoWalls.plugin, 20L);
+	}
 }

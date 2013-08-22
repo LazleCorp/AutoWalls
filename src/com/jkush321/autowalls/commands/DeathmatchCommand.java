@@ -6,9 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import com.jkush321.autowalls.AutoWalls;
-import com.jkush321.autowalls.TeleportManager;
 
 public class DeathmatchCommand implements CommandExecutor {
 
@@ -21,10 +19,6 @@ public class DeathmatchCommand implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You may not use SpawnTP commands, console!");
-            return false;
-        }
         if (sender.hasPermission("autowalls.op") || sender.isOp()) {
         Player p = (Player) sender;
         Location l = p.getLocation();
@@ -41,6 +35,11 @@ public class DeathmatchCommand implements CommandExecutor {
 	        	plugin.getConfig().set("SpawnZ2", Double.valueOf(l.getBlockZ() + 0.5));
 	        	plugin.saveConfig();
 	        	p.sendMessage(ChatColor.GREEN + "Deathmatch spawn for map 2 set!");
+        	} if (args[0].equalsIgnoreCase("start")) {
+        		if (AutoWalls.gameInProgress) {
+        			AutoWalls.deathMatch();
+        			p.sendMessage(ChatColor.GREEN + "Deathmatch Started!");
+        		} else p.sendMessage(ChatColor.RED + "Game has not started yet!");
         	}
         }
         } return true;
